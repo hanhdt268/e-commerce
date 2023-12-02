@@ -7,8 +7,6 @@ import com.example.graduationbe.repository.*;
 import com.example.graduationbe.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +28,7 @@ public class OrderServiceImpl implements OrderService {
     private final ShipperRepository shipperRepository;
     private final OrderDetailsRepository orderDetailsRepository;
 
-    @CacheEvict(value = {"order", "cart", "Selling"}, allEntries = true)
+    //    @CacheEvict(value = {"order", "cart", "Selling"}, allEntries = true)
     public void placeOrder1(OrderInput orderInput, Long userID, List<Long> cartId, boolean isCartCheckout) {
         List<Cart> cart = this.cartRepository.findBy(userID, cartId);
         int quantity = 0;
@@ -83,7 +81,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @Cacheable(value = "order", key = "{#user.userID,#status}")
+//    @Cacheable(value = "order", key = "{#user.userID,#status}")
     public List<OrderDto> getOrderByUser(User user, String status) {
         if (status.equals("All")) {
             List<Order> oderDetails1 = this.orderRepository.findByUser(user);
@@ -96,7 +94,7 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
-    @Cacheable(value = "order", key = "{#userId, #status}")
+    //    @Cacheable(value = "order", key = "{#userId, #status}")
     public List<OrderDto> getOrdersForShipper(Long userId, String status) {
         if (status.equals("All")) {
             List<Order> oderDetails1 = this.orderRepository.findAllBy(userId);
@@ -110,7 +108,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @Cacheable("order")
+//    @Cacheable("order")
     public List<OrderDto> getOrders(String status) {
         if (status.equals("All")) {
             List<Order> oderDetails = this.orderRepository.findAll();
@@ -123,7 +121,7 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
-    @CacheEvict(value = "order", allEntries = true)
+    //    @CacheEvict(value = "order", allEntries = true)
     public void insertShipper(Long orderId, Long userId) {
         User user = this.userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException("user not found"));
         Order order = this.orderRepository.findById(orderId).get();
@@ -188,7 +186,7 @@ public class OrderServiceImpl implements OrderService {
 //                new UsernameNotFoundException("order not found")), OrderDto.class);
 //    }
 //
-    @CacheEvict(value = "order", allEntries = true)
+//    @CacheEvict(value = "order", allEntries = true)
     public void markOrderAsConfirm(Long orderId) {
         Order orderDetails = this.orderRepository.findById(orderId).orElseThrow(() ->
                 new UsernameNotFoundException("order not found"));
@@ -198,7 +196,7 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
-    @CacheEvict(value = "order", allEntries = true)
+    //    @CacheEvict(value = "order", allEntries = true)
     public void markOrderAsDelivering(Long orderId) {
         Order orderDetails = this.orderRepository.findById(orderId).orElseThrow(() ->
                 new UsernameNotFoundException("order not found"));
@@ -208,7 +206,7 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
-    @CacheEvict(value = "order", allEntries = true)
+    //    @CacheEvict(value = "order", allEntries = true)
     public void markOrderAsDestroy(Long orderId) {
         Order orderDetails = this.orderRepository.findById(orderId).orElseThrow(() ->
                 new UsernameNotFoundException("order not found"));
@@ -219,7 +217,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     //
-    @CacheEvict(value = "order", allEntries = true)
+//    @CacheEvict(value = "order", allEntries = true)
     public void markOrderAsDelivered(Long orderId) {
         Order orderDetails = this.orderRepository.findById(orderId).orElseThrow(() ->
                 new UsernameNotFoundException("order not found"));
@@ -231,7 +229,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     //
-    @CacheEvict(value = "order", allEntries = true)
+//    @CacheEvict(value = "order", allEntries = true)
     public void markOrderAsReceived(Long orderId) {
         Order orderDetails = this.orderRepository.findById(orderId).orElseThrow(() ->
                 new UsernameNotFoundException("order not found"));
@@ -242,7 +240,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     //
-    @CacheEvict(value = "order", allEntries = true)
+//    @CacheEvict(value = "order", allEntries = true)
     public void markOrderAsReviewsProduct(Long orderId) {
         Order orderDetails = this.orderRepository.findById(orderId).orElseThrow(() ->
                 new UsernameNotFoundException("order not found"));

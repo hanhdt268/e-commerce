@@ -15,15 +15,10 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @RequestMapping("/product")
@@ -41,9 +36,9 @@ public class ProductController {
     private final AccessoryRepository accessoryRepository;
     private final SmartPhoneRepository smartPhoneRepository;
 
-    @PostMapping(value = "/", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<ProductDto> createProduct(@RequestPart("product") ProductDto productDto,
-                                                    @RequestPart("imageFile") MultipartFile[] file) {
+    @PostMapping("/")
+    public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto productDto
+    ) {
 
         if (!productDto.getProductEnum().equals(ProductEnum.ACCESSORY)
                 && !productDto.getProductEnum().equals(ProductEnum.LAPTOP)
@@ -54,8 +49,7 @@ public class ProductController {
             Product product = new Product();
             BeanUtils.copyProperties(productDto, product, "pId", "accessoryConfig",
                     "smartPhoneConfig", "laptopConfig", "productEnum");
-            Set<ImageModel> imageModels = uploadFile(file);
-            product.setProductImages(imageModels);
+
             Product productSave = this.productService.creteaProduct(product);
             ProductDto productDtoReturn = new ProductDto();
             BeanUtils.copyProperties(productSave, productDtoReturn, "accessoryProd",
@@ -88,22 +82,22 @@ public class ProductController {
         }
     }
 
-    public Set<ImageModel> uploadFile(MultipartFile[] multipartFiles) throws IOException {
-        Set<ImageModel> imageModels = new HashSet<>();
-        for (MultipartFile file : multipartFiles) {
-            ImageModel imageModel = new ImageModel(
-                    file.getOriginalFilename(),
-                    file.getContentType(),
-                    file.getBytes()
-            );
-            imageModels.add(imageModel);
-        }
-        return imageModels;
-    }
+//    public Set<ImageModel> uploadFile(MultipartFile[] multipartFiles) throws IOException {
+//        Set<ImageModel> imageModels = new HashSet<>();
+//        for (MultipartFile file : multipartFiles) {
+//            ImageModel imageModel = new ImageModel(
+//                    file.getOriginalFilename(),
+//                    file.getContentType(),
+//                    file.getBytes()
+//            );
+//            imageModels.add(imageModel);
+//        }
+//        return imageModels;
+//    }
 
-    @PutMapping(value = "/", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<ProductDto> updateProduct(@RequestPart("product") ProductDto productDto,
-                                                    @RequestPart("imageFile") MultipartFile[] file) {
+    @PutMapping("/")
+    public ResponseEntity<ProductDto> updateProduct(@RequestBody ProductDto productDto
+    ) {
 //        return ResponseEntity.ok(this.productService.addProduct(product));
         if (!productDto.getProductEnum().equals(ProductEnum.ACCESSORY)
                 && !productDto.getProductEnum().equals(ProductEnum.LAPTOP)
@@ -114,8 +108,6 @@ public class ProductController {
             Product product = new Product();
             BeanUtils.copyProperties(productDto, product, "accessoryProd",
                     "smartPhoneProd", "laptop", "productEnum");
-            Set<ImageModel> imageModels = uploadFile(file);
-            product.setProductImages(imageModels);
             Product productSave = this.productService.creteaProduct(product);
             ProductDto productDtoReturn = new ProductDto();
             BeanUtils.copyProperties(productSave, productDtoReturn, "accessoryProd",
@@ -251,11 +243,11 @@ public class ProductController {
         return this.productService.getProductOfManufacturer(manufacturer, pageNumber, searchKey);
     }
 
-    @GetMapping("/{isSingleProductCheckOut}/{pId}")
-    public List<ProductDto> getProductDetails(@PathVariable(name = "isSingleProductCheckOut") boolean isSingleProductCheckOut,
-                                              @PathVariable(name = "pId") Long pId) {
-        return this.productService.getProductDetails(isSingleProductCheckOut, pId);
-    }
+//    @GetMapping("/{isSingleProductCheckOut}/{pId}")
+//    public List<ProductDto> getProductDetails(@PathVariable(name = "isSingleProductCheckOut") boolean isSingleProductCheckOut,
+//                                              @PathVariable(name = "pId") Long pId) {
+//        return this.productService.getProductDetails(isSingleProductCheckOut, pId);
+//    }
 
     @GetMapping("/get/{userId}/{cartId}")
     public List<CartDto> getProductForPayment(@PathVariable(name = "userId") Long userId,

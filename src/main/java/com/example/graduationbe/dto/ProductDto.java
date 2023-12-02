@@ -19,9 +19,7 @@ public class ProductDto implements Serializable {
     private Long pId;
 
     private String title;
-
     private String description;
-
     private String config;
     private Double price;
     private Double discountPrice;
@@ -29,17 +27,11 @@ public class ProductDto implements Serializable {
     private Boolean active = false;
     private Integer quantum;
     private Category category;
-
     private Manufacturer manufacturer;
-
-    private Set<ImageModel> productImages;
-
+    private Set<String> imgChildren;
     private Laptop laptopConfig;
-
     private SmartPhone smartPhoneConfig;
     private Accessory accessoryConfig;
-
-
     private ProductEnum productEnum;
     private Set<CommentDto> comment;
     private Set<ReviewDto> reviews;

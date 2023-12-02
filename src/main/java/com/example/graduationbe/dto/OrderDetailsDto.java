@@ -9,8 +9,10 @@ import java.io.Serializable;
 @Getter
 @Setter
 @NoArgsConstructor
+
 public class OrderDetailsDto implements Serializable {
     private int quantity;
     private ProductDto product;
+
 
 }

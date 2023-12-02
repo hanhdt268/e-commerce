@@ -25,11 +25,11 @@ public class Category implements Serializable {
     private String title;
 
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "category", fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<Product> products = new HashSet<>();
 
-    @OneToMany(mappedBy = "category", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "category", fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<Manufacturer> manufacturers = new HashSet<>();
 }

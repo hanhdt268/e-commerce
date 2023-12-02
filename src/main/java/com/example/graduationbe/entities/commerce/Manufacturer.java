@@ -22,7 +22,7 @@ public class Manufacturer implements Serializable {
     private Long manuId;
     private String title;
     private Boolean completed = false;
-    @OneToMany(mappedBy = "manufacturer", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "manufacturer", fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<Product> products = new HashSet<>();
     @ManyToOne(fetch = FetchType.EAGER)

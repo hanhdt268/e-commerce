@@ -36,14 +36,12 @@ public class Product implements Serializable {
 
     @ManyToOne(fetch = FetchType.EAGER)
     private Manufacturer manufacturer;
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "product_images", joinColumns = {
-            @JoinColumn(name = "product_id")
-    }, inverseJoinColumns = {
-            @JoinColumn(name = "image_id")
-    }
-    )
-    private Set<ImageModel> productImages;
+
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "product_image", joinColumns = @JoinColumn(name = "product_id"))
+    @Column(length = 2000)
+    private Set<String> imgChildren;
 
     @OneToOne(mappedBy = "lap_id")
     private Laptop laptopConfig;
@@ -53,9 +51,9 @@ public class Product implements Serializable {
 
     @OneToOne(mappedBy = "accessId")
     private Accessory accessoryConfig;
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
 //    @JsonIgnore
     private Set<Comment> comment = new HashSet<>();
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
     private Set<Review> reviews = new HashSet<>();
 }

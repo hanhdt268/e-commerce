@@ -11,8 +11,6 @@ import com.example.graduationbe.repository.UserRepository;
 import com.example.graduationbe.service.CartService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,7 +28,7 @@ public class CartServiceImpl implements CartService {
     private final UserRepository userRepository;
 
     @Override
-    @CacheEvict(value = "cart", allEntries = true)
+//    @CacheEvict(value = "cart", allEntries = true)
     public CartDto addToCart(Long pId) {
         Product product = productRepository.findById(pId).get();
         String username = JwtAuthenticationFilter.USER_CURRENT;
@@ -54,7 +52,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    @Cacheable(value = "cart", key = "#user.userID")
+//    @Cacheable(value = "cart", key = "#user.userID")
     public List<CartDto> getCartDetails(User user) {
         List<Cart> carts = cartRepository.findByUser(user);
         List<CartDto> cartDtos = carts.stream().map(cart -> this.modelMapper.map(cart, CartDto.class)).collect(Collectors.toList());
@@ -67,7 +65,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    @CacheEvict(value = "cart", allEntries = true)
+//    @CacheEvict(value = "cart", allEntries = true)
     public Cart getCartById(Long cartId) {
         return this.cartRepository.findById(cartId).get();
     }

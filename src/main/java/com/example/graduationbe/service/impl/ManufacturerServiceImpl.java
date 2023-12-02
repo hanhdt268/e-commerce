@@ -5,8 +5,6 @@ import com.example.graduationbe.entities.commerce.Manufacturer;
 import com.example.graduationbe.repository.ManufacturerRepository;
 import com.example.graduationbe.service.ManufacturerService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -20,25 +18,23 @@ public class ManufacturerServiceImpl implements ManufacturerService {
     private final ManufacturerRepository manufacturerRepository;
 
     @Override
-    @CacheEvict(value = "manufacturer", allEntries = true)
     public Manufacturer createManufacturer(Manufacturer manufacturer) {
         return this.manufacturerRepository.save(manufacturer);
     }
 
     @Override
-    @Cacheable("manufacturer")
+//    @Cacheable("manufacturer")
     public List<Manufacturer> getAll() {
         return this.manufacturerRepository.findAll();
     }
 
     @Override
-    @Cacheable("manufacturer")
+//    @Cacheable("manufacturer")
     public Manufacturer getManufacturerById(Long manuId) {
         return this.manufacturerRepository.findById(manuId).orElse(null);
     }
 
     @Override
-    @CacheEvict(value = {"manufacturer", "product"}, allEntries = true)
     public Manufacturer updateManufacturer(Manufacturer manufacturer) {
         return this.manufacturerRepository.save(manufacturer);
     }

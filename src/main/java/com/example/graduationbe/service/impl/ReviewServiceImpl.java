@@ -11,7 +11,6 @@ import com.example.graduationbe.repository.UserRepository;
 import com.example.graduationbe.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -28,7 +27,7 @@ public class ReviewServiceImpl implements ReviewService {
     private final ModelMapper modelMapper;
 
     @Override
-    @CacheEvict(value = {"review", "product"}, allEntries = true)
+//    @CacheEvict(value = {"review", "product"}, allEntries = true)
     public ReviewDto createReview(ReviewDto review, Long pid) {
         String currentUser = JwtAuthenticationFilter.USER_CURRENT;
         User user = this.userRepository.findByUsername(currentUser);

@@ -1,9 +1,7 @@
 package com.example.graduationbe.service.impl;
 
-import com.example.graduationbe.config.JwtAuthenticationFilter;
 import com.example.graduationbe.dto.CartDto;
 import com.example.graduationbe.dto.ProductDto;
-import com.example.graduationbe.entities.User;
 import com.example.graduationbe.entities.commerce.Cart;
 import com.example.graduationbe.entities.commerce.Category;
 import com.example.graduationbe.entities.commerce.Manufacturer;
@@ -14,14 +12,10 @@ import com.example.graduationbe.repository.UserRepository;
 import com.example.graduationbe.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,13 +31,13 @@ public class ProductServiceImpl implements ProductService {
     private final CartRepository cartRepository;
 
     @Override
-    @CacheEvict(value = {"product", "Desc", "Asc", "Selling"}, allEntries = true)
+//    @CacheEvict(value = {"product", "Desc", "Asc", "Selling"}, allEntries = true)
     public Product creteaProduct(Product product) {
         return this.productRepository.save(product);
     }
 
     @Override
-    @CachePut(value = {"product", "Desc", "Asc", "Selling"})
+//    @CachePut(value = {"product", "Desc", "Asc", "Selling"})
     public Product updateProduct(Product product) {
         return this.productRepository.save(product);
     }
@@ -55,11 +49,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    @Cacheable("product")
+//    @Cacheable("product")
     public List<ProductDto> getProducts() {
         List<Product> products = this.productRepository.findAll();
-        List<ProductDto> productDtos = products.stream().map(product -> this.modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
-        return productDtos;
+        return products.stream().map(product -> this.modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
     }
 
     @Override
@@ -68,7 +61,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    @Cacheable(value = "product", key = "#category.cateId")
+//    @Cacheable(value = "product", key = "#category.cateId")
     public List<ProductDto> getProductOfCategory(Category category, int pageNumber, String searchKey) {
         Pageable pageable = PageRequest.of(pageNumber, 8);
 
@@ -91,7 +84,7 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
-    @Cacheable(value = "product")
+//    @Cacheable(value = "product")
     public List<ProductDto> getActiveProduct(int pageNumber, String searchKey) {
         Pageable pageable = PageRequest.of(pageNumber, 8);
         if (searchKey.equals("")) {
@@ -109,7 +102,7 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
-    @Cacheable("product")
+    //    @Cacheable("product")
     public List<ProductDto> getProducts(String searchKey) {
         Pageable pageable = PageRequest.of(0, 8);
         if (searchKey.equals("")) {
@@ -184,7 +177,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    @Cacheable(value = "product", key = "#manufacturer.manuId")
+//    @Cacheable(value = "product", key = "#manufacturer.manuId")
     public List<ProductDto> getProductOfManufacturer(Manufacturer manufacturer, int pageNumber, String searchKey) {
         Pageable pageable = PageRequest.of(pageNumber, 8);
         if (searchKey.equals("")) {
@@ -199,24 +192,24 @@ public class ProductServiceImpl implements ProductService {
             return productDtos;
         }
     }
-
-    @Override
-    public List<ProductDto> getProductDetails(boolean isSingleProductCheckout, Long pid) {
-        if (isSingleProductCheckout && pid != null) {
-            List<ProductDto> list = new ArrayList<>();
-            Product product = this.productRepository.findById(pid).get();
-            ProductDto productDto = this.modelMapper.map(product, ProductDto.class);
-            list.add(productDto);
-            return list;
-        } else {
-            String username = JwtAuthenticationFilter.USER_CURRENT;
-            User user = this.userRepository.findByUsername(username);
-            List<Cart> cart = this.cartRepository.findByUser(user);
-            List<CartDto> cartDtos = cart.stream().map((element) -> modelMapper.map(element, CartDto.class)).collect(Collectors.toList());
-            cartDtos.stream().map(CartDto::getQuantity);
-            return cartDtos.stream().map(CartDto::getProduct).collect(Collectors.toList());
-        }
-    }
+//
+//    @Override
+//    public List<ProductDto> getProductDetails(boolean isSingleProductCheckout, Long pid) {
+//        if (isSingleProductCheckout && pid != null) {
+//            List<ProductDto> list = new ArrayList<>();
+//            Product product = this.productRepository.findById(pid).get();
+//            ProductDto productDto = this.modelMapper.map(product, ProductDto.class);
+//            list.add(productDto);
+//            return list;
+//        } else {
+//            String username = JwtAuthenticationFilter.USER_CURRENT;
+//            User user = this.userRepository.findByUsername(username);
+//            List<Cart> cart = this.cartRepository.findByUser(user);
+//            List<CartDto> cartDtos = cart.stream().map((element) -> modelMapper.map(element, CartDto.class)).collect(Collectors.toList());
+//            cartDtos.stream().map(CartDto::getQuantity);
+//            return cartDtos.stream().map(CartDto::getProduct).collect(Collectors.toList());
+//        }
+//    }
 
     public List<CartDto> getProductForPayment(Long userId, List<Long> longs) {
         List<Cart> cart = this.cartRepository.findBy(userId, longs);

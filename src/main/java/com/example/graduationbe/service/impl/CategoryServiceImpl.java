@@ -6,8 +6,6 @@ import com.example.graduationbe.repository.CategoryRepository;
 import com.example.graduationbe.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,13 +19,13 @@ public class CategoryServiceImpl implements CategoryService {
     private final ModelMapper modelMapper;
 
     @Override
-    @CacheEvict(value = {"category", "product"}, allEntries = true)
+//    @CacheEvict(value = {"category", "product"}, allEntries = true)
     public Category createCategory(Category category) {
         return this.categoryRepository.save(category);
     }
 
     @Override
-    @Cacheable("category")
+//    @Cacheable("category")
     public List<CategoryDto> getAll() {
         List<Category> categories = this.categoryRepository.findAll();
         List<CategoryDto> categoryDtos = categories.stream().map((element) ->
@@ -36,20 +34,20 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    @Cacheable("category")
+//    @Cacheable("category")
     public CategoryDto getCategoryById(Long cateId) {
         Category category = this.categoryRepository.findById(cateId).orElse(null);
         return this.modelMapper.map(category, CategoryDto.class);
     }
 
     @Override
-    @CacheEvict(value = {"category", "product"}, allEntries = true)
+//    @CacheEvict(value = {"category", "product"}, allEntries = true)
     public Category updateCategory(Category category) {
         return this.categoryRepository.save(category);
     }
 
     @Override
-    @CacheEvict(value = {"category", "manufacture", "product"}, allEntries = true)
+//    @CacheEvict(value = {"category", "manufacture", "product"}, allEntries = true)
     public void deleteById(Long cateId) {
         this.categoryRepository.deleteById(cateId);
     }

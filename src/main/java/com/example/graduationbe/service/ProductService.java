@@ -25,6 +25,6 @@ public interface ProductService {
 
     List<ProductDto> getProductOfManufacturer(Manufacturer manufacturer, int pageNumber, String searchKey);
 
-    List<ProductDto> getProductDetails(boolean isSingleProductCheckout, Long pid);
+//    List<ProductDto> getProductDetails(boolean isSingleProductCheckout, Long pid);
 
 }
