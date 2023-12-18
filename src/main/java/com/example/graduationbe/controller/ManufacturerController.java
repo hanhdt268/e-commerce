@@ -5,7 +5,6 @@ import com.example.graduationbe.entities.commerce.Manufacturer;
 import com.example.graduationbe.repository.ManufacturerRepository;
 import com.example.graduationbe.service.impl.ManufacturerServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -69,7 +68,7 @@ public class ManufacturerController {
     }
 
     @DeleteMapping("/delete/{manuId}")
-    @CacheEvict(value = "manufacturer", allEntries = true)
+//    @CacheEvict(value = "manufacturer", allEntries = true)
     public void delete(@PathVariable List<Long> manuId) {
         this.manufacturerRepository.deleteByIdIn(manuId);
     }

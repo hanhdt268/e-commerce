@@ -20,7 +20,7 @@ public interface ProductService {
 
     List<ProductDto> getProductOfCategory(Category category, int pageNumber, String searchKey);
 
-    List<ProductDto> getActiveProduct(int pageNumber, String searchKey);
+    List<ProductDto> getActiveProduct(String searchKey);
 
 
     List<ProductDto> getProductOfManufacturer(Manufacturer manufacturer, int pageNumber, String searchKey);

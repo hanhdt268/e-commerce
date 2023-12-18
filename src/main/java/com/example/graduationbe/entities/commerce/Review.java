@@ -24,6 +24,7 @@ public class Review implements Serializable {
 
     private String image;
     private Date dateCreate;
+    private boolean active = true;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private Product product;

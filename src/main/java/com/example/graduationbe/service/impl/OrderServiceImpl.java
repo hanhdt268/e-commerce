@@ -52,6 +52,7 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderAmount(price);
         order.setDateDelivered(null);
         List<OrderDetails> orderDetails = new ArrayList<>();
+
         for (Cart c : cart) {
             Product product = this.productRepository.findById(c.getProduct().getPId()).get();
             OrderDetails orderDetail = new OrderDetails(

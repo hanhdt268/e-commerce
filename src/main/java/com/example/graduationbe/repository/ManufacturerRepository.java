@@ -24,4 +24,6 @@ public interface ManufacturerRepository extends JpaRepository<Manufacturer, Long
     @Transactional
     @Query(value = "delete  from manufacturer where manu_id in(:longs)", nativeQuery = true)
     void deleteByIdIn(List<Long> longs);
+
+
 }

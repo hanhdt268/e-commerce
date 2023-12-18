@@ -155,4 +155,28 @@ public class OrderController {
     private void markOrderAsReceived(@PathVariable("orderId") Long orderId) {
         this.orderServiceImpl.markOrderAsReceived(orderId);
     }
+
+    //statistics shipper
+    @GetMapping("/totalShipper/{userId}")
+    public Float getTotalAmountForShipper(@PathVariable("userId") Long userId) {
+        return this.orderRepository.sumAmount(userId);
+    }
+
+    @GetMapping("/quantityShipper/{userId}")
+    public BigDecimal getQuantityForShipper(@PathVariable("userId") Long userId) {
+        return this.orderRepository.countQuantity(userId);
+    }
+
+    @GetMapping("/deliveringShipper/{userId}")
+    public Long getDeliveringForShipper(@PathVariable("userId") Long userId) {
+        return this.orderRepository.countDelivering(userId);
+    }
+
+
+    @GetMapping("/deliveredShipper/{userId}")
+    public Long getDeliveredForShipper(@PathVariable("userId") Long userId) {
+        return this.orderRepository.countDelivery(userId);
+    }
+
+
 }

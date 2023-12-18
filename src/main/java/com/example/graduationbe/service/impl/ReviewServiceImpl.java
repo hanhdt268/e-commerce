@@ -14,6 +14,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -39,4 +41,31 @@ public class ReviewServiceImpl implements ReviewService {
         Review save = this.reviewRepository.save(review1);
         return this.modelMapper.map(save, ReviewDto.class);
     }
+
+    @Override
+    public List<ReviewDto> getReviews() {
+        List<Review> reviews = this.reviewRepository.findAll();
+        return reviews.stream().map(review -> this.modelMapper.map(review, ReviewDto.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public ReviewDto findById(Long reId) {
+        Review review = this.reviewRepository.findById(reId).get();
+        return this.modelMapper.map(review, ReviewDto.class);
+    }
+
+    @Override
+    public ReviewDto updateActive(Long reId) {
+        Review review = this.reviewRepository.findById(reId).get();
+        review.setActive(true);
+        return this.modelMapper.map(this.reviewRepository.save(review), ReviewDto.class);
+    }
+
+    @Override
+    public ReviewDto updateReview(Long reId) {
+        Review review = this.reviewRepository.findById(reId).get();
+        review.setActive(false);
+        return this.modelMapper.map(this.reviewRepository.save(review), ReviewDto.class);
+    }
+
 }

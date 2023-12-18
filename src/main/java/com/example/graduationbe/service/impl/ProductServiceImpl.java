@@ -85,8 +85,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
 //    @Cacheable(value = "product")
-    public List<ProductDto> getActiveProduct(int pageNumber, String searchKey) {
-        Pageable pageable = PageRequest.of(pageNumber, 8);
+    public List<ProductDto> getActiveProduct(String searchKey) {
+
         if (searchKey.equals("")) {
 //            return (List<Product>) this.productRepository.findAll(pageable);
             List<Product> products = this.productRepository.findByActive(true);
@@ -94,7 +94,7 @@ public class ProductServiceImpl implements ProductService {
             return productDtos;
         } else {
             List<Product> products = this.productRepository.findByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(
-                    searchKey, searchKey, pageable
+                    searchKey, searchKey
             );
 
             List<ProductDto> productDtos = products.stream().map(product -> this.modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
@@ -114,7 +114,7 @@ public class ProductServiceImpl implements ProductService {
         } else {
 
             List<Product> products = this.productRepository.findByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(
-                    searchKey, searchKey, pageable
+                    searchKey, searchKey
             );
 
             List<ProductDto> productDtos = products.stream().map(product -> this.modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
@@ -186,7 +186,7 @@ public class ProductServiceImpl implements ProductService {
             return productDtos;
         } else {
             List<Product> products = this.productRepository.findByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(
-                    searchKey, searchKey, pageable
+                    searchKey, searchKey
             );
             List<ProductDto> productDtos = products.stream().map(product -> this.modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
             return productDtos;
@@ -215,5 +215,32 @@ public class ProductServiceImpl implements ProductService {
         List<Cart> cart = this.cartRepository.findBy(userId, longs);
         List<CartDto> cartDtos = cart.stream().map((element) -> modelMapper.map(element, CartDto.class)).collect(Collectors.toList());
         return cartDtos;
+    }
+
+    public List<ProductDto> getProductOfManufacturerBySearchAsc(Manufacturer manufacturer) {
+//        Pageable pageable = PageRequest.of(pageNumber, 8);
+        List<Product> products = this.productRepository.findByManufacturerOrderByDiscountPrice(
+                manufacturer
+        );
+        List<ProductDto> productDtos = products.stream().map(product -> this.modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
+        return productDtos;
+    }
+
+    public List<ProductDto> getProductOfManufacturerBySearchDesc(Manufacturer manufacturer) {
+//        Pageable pageable = PageRequest.of(pageNumber, 8);
+        List<Product> products = this.productRepository.findByManufacturerOrderByDiscountPriceDesc(
+                manufacturer
+        );
+        List<ProductDto> productDtos = products.stream().map(product -> this.modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
+        return productDtos;
+    }
+
+    public List<ProductDto> getProductOfManufacturerBySearchSelling(Long manuId) {
+//        Pageable pageable = PageRequest.of(pageNumber, 8);
+        List<Product> products = this.productRepository.findBy(
+                manuId
+        );
+        List<ProductDto> productDtos = products.stream().map(product -> this.modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
+        return productDtos;
     }
 }

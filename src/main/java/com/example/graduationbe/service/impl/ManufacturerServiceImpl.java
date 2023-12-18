@@ -45,6 +45,7 @@ public class ManufacturerServiceImpl implements ManufacturerService {
         return this.manufacturerRepository.findManufacturerByCategory(category);
     }
 
+
     public Manufacturer updateSelected(Long manuId) {
         Manufacturer manufacturer = this.manufacturerRepository.findById(manuId).get();
         if (manufacturer == null) {

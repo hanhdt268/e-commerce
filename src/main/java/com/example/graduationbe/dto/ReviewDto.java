@@ -20,7 +20,7 @@ public class ReviewDto implements Serializable {
     private Double value;
     private String image;
     private Date dateCreate;
-
+    private boolean active = true;
     private User user;
 
 }

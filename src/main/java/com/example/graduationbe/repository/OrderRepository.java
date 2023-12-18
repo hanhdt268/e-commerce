@@ -68,4 +68,22 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 //    List<Order> findOrderByShipper();
 
 
+    @Query(value = "select sum(quantity) from orders o join shipper s on o.order_id = s.order_order_id\n" +
+            "where order_status in ('Đã giao','Hoàn thành', 'Đánh giá') and  s.user_userid=?", nativeQuery = true)
+    BigDecimal countQuantity(Long userId);
+
+    @Query(value = "select count(order_id) from orders o join shipper s on o.order_id = s.order_order_id\n" +
+            "where order_status = 'Đang giao' and  s.user_userid=?", nativeQuery = true)
+    Long countDelivering(Long userId);
+
+    @Query(value = "select count(order_id) from orders o join shipper s on o.order_id = s.order_order_id\n" +
+            "where order_status in ('Đã giao','Hoàn thành', 'Đánh giá') and  s.user_userid=?", nativeQuery = true)
+    Long countDelivery(Long userId);
+
+
+    @Query(value = "select sum(order_amount) from orders o join shipper s on o.order_id = s.order_order_id\n" +
+            "where  order_status in ('Đã giao','Hoàn thành', 'Đánh giá') and s.user_userid=?", nativeQuery = true)
+    Float sumAmount(Long userId);
+
+
 }

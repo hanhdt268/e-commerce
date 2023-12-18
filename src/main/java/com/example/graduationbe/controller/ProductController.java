@@ -189,10 +189,10 @@ public class ProductController {
 
     //get active product
     @GetMapping("/active")
-    public List<ProductDto> getActiveProduct(@RequestParam(defaultValue = "0") int pageNumber,
-                                             @RequestParam(defaultValue = "") String searchKey
+    public List<ProductDto> getActiveProduct(
+            @RequestParam(defaultValue = "") String searchKey
     ) {
-        return this.productService.getActiveProduct(pageNumber, searchKey);
+        return this.productService.getActiveProduct(searchKey);
     }
 
     @GetMapping("/all")
@@ -253,5 +253,28 @@ public class ProductController {
     public List<CartDto> getProductForPayment(@PathVariable(name = "userId") Long userId,
                                               @PathVariable(name = "cartId") List<Long> cartId) {
         return this.productServiceImpl.getProductForPayment(userId, cartId);
+    }
+
+
+    @GetMapping("/manufacturer/asc/{manuId}")
+    public List<ProductDto> getProductByManufacturerOfSearch(
+            @PathVariable("manuId") Long manuId) {
+        Manufacturer manufacturer = new Manufacturer();
+        manufacturer.setManuId(manuId);
+        return this.productServiceImpl.getProductOfManufacturerBySearchAsc(manufacturer);
+    }
+
+    @GetMapping("/manufacturer/desc/{manuId}")
+    public List<ProductDto> getProductByManufacturerOfSearchDesc(
+            @PathVariable("manuId") Long manuId) {
+        Manufacturer manufacturer = new Manufacturer();
+        manufacturer.setManuId(manuId);
+        return this.productServiceImpl.getProductOfManufacturerBySearchDesc(manufacturer);
+    }
+
+    @GetMapping("/manufacturer/selling/{manuId}")
+    public List<ProductDto> getProductByManufacturerOfSearchSelling(
+            @PathVariable("manuId") Long manuId) {
+        return this.productServiceImpl.getProductOfManufacturerBySearchSelling(manuId);
     }
 }
