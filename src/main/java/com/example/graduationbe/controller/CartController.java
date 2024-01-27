@@ -26,9 +26,9 @@ public class CartController {
     private final ModelMapper modelMapper;
 
 
-    @GetMapping("/{pId}")
-    public ResponseEntity<CartDto> addToCart(@PathVariable("pId") Long pId) {
-        return ResponseEntity.ok(this.cartService.addToCart(pId));
+    @PostMapping("/{pId}")
+    public ResponseEntity<CartDto> addToCart(@RequestBody Cart cart, @PathVariable("pId") Long pId) {
+        return ResponseEntity.ok(this.cartService.addToCart(cart, pId));
     }
 
     @GetMapping("/getCartByUser/{id}")
@@ -61,12 +61,17 @@ public class CartController {
                 if (plus.equals("sub")) {
                     cart.setQuantity(cart.getQuantity() - 1);
                 }
-
                 return ResponseEntity.ok(this.modelMapper.map(this.cartRepository.save(cart), CartDto.class));
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    }
+
+    @DeleteMapping("/delete/{cartId}")
+//    @CacheEvict(value = "manufacturer", allEntries = true)
+    public void delete(@PathVariable List<Long> cartId) {
+        this.cartRepository.deleteByIdIn(cartId);
     }
 }

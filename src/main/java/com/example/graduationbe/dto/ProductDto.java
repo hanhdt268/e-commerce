@@ -1,7 +1,6 @@
 package com.example.graduationbe.dto;
 
 import com.example.graduationbe.entities.commerce.*;
-import com.example.graduationbe.enums.ProductEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,7 +31,7 @@ public class ProductDto implements Serializable {
     private Laptop laptopConfig;
     private SmartPhone smartPhoneConfig;
     private Accessory accessoryConfig;
-    private ProductEnum productEnum;
+    //    private ProductEnum productEnum;
     private Set<CommentDto> comment;
     private Set<ReviewDto> reviews;
 

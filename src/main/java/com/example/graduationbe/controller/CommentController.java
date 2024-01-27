@@ -18,6 +18,7 @@ public class CommentController {
 
     private final CommentServiceImpl commentService;
 
+    //them comment
     @PostMapping("/{pId}")
     public ResponseEntity<CommentDto> createComment(@RequestBody CommentDto comment,
                                                     @PathVariable("pId") Long pId) {

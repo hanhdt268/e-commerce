@@ -29,7 +29,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
 //    @CacheEvict(value = "cart", allEntries = true)
-    public CartDto addToCart(Long pId) {
+    public CartDto addToCart(Cart cart, Long pId) {
         Product product = productRepository.findById(pId).get();
         String username = JwtAuthenticationFilter.USER_CURRENT;
         User user = null;
@@ -45,7 +45,8 @@ public class CartServiceImpl implements CartService {
         }
 
         if (product != null && user != null) {
-            Cart cart = new Cart(1, product, user);
+            cart.setProduct(product);
+            cart.setUser(user);
             return this.modelMapper.map(this.cartRepository.save(cart), CartDto.class);
         }
         return null;

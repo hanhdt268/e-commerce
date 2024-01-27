@@ -7,7 +7,7 @@ import com.example.graduationbe.entities.commerce.Cart;
 import java.util.List;
 
 public interface CartService {
-    CartDto addToCart(Long pId);
+    CartDto addToCart(Cart cart, Long pId);
 
     List<CartDto> getCartDetails(User user);
 

@@ -178,5 +178,9 @@ public class OrderController {
         return this.orderRepository.countDelivery(userId);
     }
 
+    @GetMapping("/countCancel")
+    public Long getCountCancel() {
+        return this.orderRepository.countCancel();
+    }
 
 }

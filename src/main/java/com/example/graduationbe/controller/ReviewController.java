@@ -19,10 +19,11 @@ public class ReviewController {
 
     private final ReviewRepository reviewRepository;
 
-    @PostMapping("/{pid}")
+    @PostMapping("/{pid}/{orderDetailId}")
     public ResponseEntity<ReviewDto> createReview(@RequestBody ReviewDto reviewDto,
-                                                  @PathVariable("pid") Long pid) {
-        return ResponseEntity.ok(this.reviewService.createReview(reviewDto, pid));
+                                                  @PathVariable("pid") Long pid,
+                                                  @PathVariable("orderDetailId") Long orderDetailId) {
+        return ResponseEntity.ok(this.reviewService.createReview(reviewDto, pid, orderDetailId));
     }
 
     @GetMapping("/stars/{pId}")

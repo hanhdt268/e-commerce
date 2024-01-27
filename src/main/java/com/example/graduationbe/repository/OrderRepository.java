@@ -56,6 +56,9 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     Long countBy(String orderStatus);
 
 
+    @Query(value = "select  count(order_id) from orders where order_status in ('Đã hủy', 'Trả hàng')", nativeQuery = true)
+    Long countCancel();
+
     @Query(value = "select count(order_id) from orders where order_status in ('Đã giao','Hoàn thành', 'Đánh giá')", nativeQuery = true)
     Long countAllBy();
 

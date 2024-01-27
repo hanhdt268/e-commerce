@@ -16,6 +16,5 @@ public class CartDto implements Serializable {
     private Long cartId;
     private Integer quantity;
     private ProductDto product;
-
     private User user;
 }

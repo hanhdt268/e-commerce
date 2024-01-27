@@ -22,7 +22,7 @@ public class ManufacturerController {
 
 
     @PostMapping("/")
-    public ResponseEntity<Manufacturer> addManufacturer(@RequestBody Manufacturer manufacturer) {
+    public ResponseEntity<Manufacturer> addManufacturer(@RequestBody Manufacturer manufacturer) throws Exception {
         return ResponseEntity.ok(this.manufacturerService.createManufacturer(manufacturer));
     }
 
@@ -36,7 +36,7 @@ public class ManufacturerController {
     }
 
     @PutMapping("/")
-    public ResponseEntity<Manufacturer> updateManufacturer(@RequestBody Manufacturer manufacturer) {
+    public ResponseEntity<Manufacturer> updateManufacturer(@RequestBody Manufacturer manufacturer) throws Exception {
         return ResponseEntity.ok(this.manufacturerService.updateManufacturer(manufacturer));
     }
 

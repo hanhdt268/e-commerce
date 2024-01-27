@@ -22,6 +22,8 @@ public class OrderDetails implements Serializable {
 
     private int quantity;
 
+    private boolean isReviewed = false;
+
     @OneToOne
     private Product product;
 

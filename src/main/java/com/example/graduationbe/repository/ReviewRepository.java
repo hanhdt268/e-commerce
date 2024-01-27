@@ -10,9 +10,9 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     List<Review> findByActive(boolean b);
 
-    @Query(value = "select (sum(value)/count(re_id)) as rating  from review where product_p_id=?", nativeQuery = true)
+    @Query(value = "select (sum(value)/count(re_id)) as rating  from review where product_p_id=? and active = true", nativeQuery = true)
     Float countBy(Long pId);
 
-    @Query(value = "select count(re_id) as t from review where product_p_id=?", nativeQuery = true)
+    @Query(value = "select count(re_id) as t from review where product_p_id=? and active = true", nativeQuery = true)
     Long countAllBy(Long pId);
 }

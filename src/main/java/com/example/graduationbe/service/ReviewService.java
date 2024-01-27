@@ -5,7 +5,7 @@ import com.example.graduationbe.dto.ReviewDto;
 import java.util.List;
 
 public interface ReviewService {
-    ReviewDto createReview(ReviewDto review, Long pid);
+    ReviewDto createReview(ReviewDto review, Long pid, Long orderDetailId);
 
     List<ReviewDto> getReviews();
 
@@ -14,4 +14,6 @@ public interface ReviewService {
     ReviewDto updateActive(Long reId);
 
     ReviewDto updateReview(Long reId);
+
+
 }

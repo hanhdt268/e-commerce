@@ -28,8 +28,7 @@ public class Cart implements Serializable {
     private User user;
 
 
-    public Cart(Integer quantity, Product product, User user) {
-        this.quantity = quantity;
+    public Cart(Product product, User user) {
         this.product = product;
         this.user = user;
     }

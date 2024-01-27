@@ -11,7 +11,9 @@ import java.io.Serializable;
 @NoArgsConstructor
 
 public class OrderDetailsDto implements Serializable {
+    private Long id;
     private int quantity;
+    private boolean isReviewed = false;
     private ProductDto product;
 
 

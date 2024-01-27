@@ -19,9 +19,16 @@ public class CategoryServiceImpl implements CategoryService {
     private final ModelMapper modelMapper;
 
     @Override
-//    @CacheEvict(value = {"category", "product"}, allEntries = true)
-    public Category createCategory(Category category) {
-        return this.categoryRepository.save(category);
+//    @CacheEvict(value = {"category"}, allEntries = true)
+    public Category createCategory(Category category) throws Exception {
+        Category category1 = this.categoryRepository.findByTitle(category.getTitle());
+        if (category1 != null) {
+            System.out.println("Category is already there!!!");
+            throw new Exception();
+        } else {
+            category1 = this.categoryRepository.save(category);
+        }
+        return category1;
     }
 
     @Override
@@ -42,8 +49,15 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
 //    @CacheEvict(value = {"category", "product"}, allEntries = true)
-    public Category updateCategory(Category category) {
-        return this.categoryRepository.save(category);
+    public Category updateCategory(Category category) throws Exception {
+        Category category1 = this.categoryRepository.findByTitle(category.getTitle());
+        if (category1 != null) {
+            System.out.println("Category is already there!!!");
+            throw new Exception();
+        } else {
+            category1 = this.categoryRepository.save(category);
+        }
+        return category1;
     }
 
     @Override

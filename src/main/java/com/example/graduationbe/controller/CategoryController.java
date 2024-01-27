@@ -19,13 +19,13 @@ public class CategoryController {
     private final CategoryServiceImpl categoryService;
 
     @PostMapping("/")
-    public ResponseEntity<Category> addCategory(@RequestBody Category category) {
+    public ResponseEntity<Category> addCategory(@RequestBody Category category) throws Exception {
         return ResponseEntity.ok(this.categoryService.createCategory(category));
     }
 
     //update
     @PutMapping("/")
-    public ResponseEntity<Category> updateCategory(@RequestBody Category category) {
+    public ResponseEntity<Category> updateCategory(@RequestBody Category category) throws Exception {
         return ResponseEntity.ok(this.categoryService.updateCategory(category));
     }
 

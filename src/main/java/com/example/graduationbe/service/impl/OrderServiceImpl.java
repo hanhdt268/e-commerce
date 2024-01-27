@@ -39,6 +39,7 @@ public class OrderServiceImpl implements OrderService {
             price += item.getProduct().getDiscountPrice() * item.getQuantity();
             user = this.userRepository.findById(item.getUser().getUserID()).get();
         }
+        double tax = tax(price, 0.08);
         Order order = new Order();
         order.setUser(user);
         order.setOrderDate(new Date());
@@ -49,7 +50,7 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderFullOder(orderInput.getFullAddress());
         order.setNote(orderInput.getNote());
         order.setQuantity(quantity);
-        order.setOrderAmount(price);
+        order.setOrderAmount(price + tax);
         order.setDateDelivered(null);
         List<OrderDetails> orderDetails = new ArrayList<>();
 
@@ -74,6 +75,10 @@ public class OrderServiceImpl implements OrderService {
         }
         order.setOrderDetails(orderDetails);
         this.orderRepository.save(order);
+    }
+
+    public double tax(double a, double b) {
+        return a * b;
     }
 
     @Override

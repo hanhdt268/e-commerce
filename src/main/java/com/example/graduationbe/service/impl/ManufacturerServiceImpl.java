@@ -18,8 +18,15 @@ public class ManufacturerServiceImpl implements ManufacturerService {
     private final ManufacturerRepository manufacturerRepository;
 
     @Override
-    public Manufacturer createManufacturer(Manufacturer manufacturer) {
-        return this.manufacturerRepository.save(manufacturer);
+    public Manufacturer createManufacturer(Manufacturer manufacturer) throws Exception {
+        Manufacturer manufacturer1 = this.manufacturerRepository.findByTitle(manufacturer.getTitle());
+        if (manufacturer1 != null) {
+            System.out.println("Category is already there!!!");
+            throw new Exception();
+        } else {
+            manufacturer1 = this.manufacturerRepository.save(manufacturer);
+        }
+        return manufacturer1;
     }
 
     @Override
@@ -35,8 +42,15 @@ public class ManufacturerServiceImpl implements ManufacturerService {
     }
 
     @Override
-    public Manufacturer updateManufacturer(Manufacturer manufacturer) {
-        return this.manufacturerRepository.save(manufacturer);
+    public Manufacturer updateManufacturer(Manufacturer manufacturer) throws Exception {
+        Manufacturer manufacturer1 = this.manufacturerRepository.findByTitle(manufacturer.getTitle());
+        if (manufacturer1 != null) {
+            System.out.println("Category is already there!!!");
+            throw new Exception();
+        } else {
+            manufacturer1 = this.manufacturerRepository.save(manufacturer);
+        }
+        return manufacturer1;
     }
 
 

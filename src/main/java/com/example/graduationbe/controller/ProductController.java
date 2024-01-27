@@ -4,7 +4,6 @@ package com.example.graduationbe.controller;
 import com.example.graduationbe.dto.CartDto;
 import com.example.graduationbe.dto.ProductDto;
 import com.example.graduationbe.entities.commerce.*;
-import com.example.graduationbe.enums.ProductEnum;
 import com.example.graduationbe.repository.AccessoryRepository;
 import com.example.graduationbe.repository.LaptopRepository;
 import com.example.graduationbe.repository.ProductRepository;
@@ -14,7 +13,6 @@ import com.example.graduationbe.service.impl.ProductServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,34 +38,34 @@ public class ProductController {
     public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto productDto
     ) {
 
-        if (!productDto.getProductEnum().equals(ProductEnum.ACCESSORY)
-                && !productDto.getProductEnum().equals(ProductEnum.LAPTOP)
-                && !productDto.getProductEnum().equals(ProductEnum.SMARTPHONE)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
+//        if (!productDto.getProductEnum().equals(ProductEnum.ACCESSORY)
+//                && !productDto.getProductEnum().equals(ProductEnum.LAPTOP)
+//                && !productDto.getProductEnum().equals(ProductEnum.SMARTPHONE)) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+//        }
         try {
             Product product = new Product();
             BeanUtils.copyProperties(productDto, product, "pId", "accessoryConfig",
-                    "smartPhoneConfig", "laptopConfig", "productEnum");
+                    "smartPhoneConfig", "laptopConfig");
 
             Product productSave = this.productService.creteaProduct(product);
             ProductDto productDtoReturn = new ProductDto();
             BeanUtils.copyProperties(productSave, productDtoReturn, "accessoryProd",
-                    "smartPhoneProd", "laptop", "productEnum");
-            switch (productDto.getProductEnum().toString()) {
-                case "LAPTOP" -> {
+                    "smartPhoneProd", "laptop");
+            switch (productDto.getCategory().getCateId().toString()) {
+                case "39" -> {
                     Laptop laptop = productDto.getLaptopConfig();
                     laptop.setLap_id(productSave);
                     Laptop laptopSave = this.laptopRepository.save(laptop);
                     productDtoReturn.setLaptopConfig(laptopSave);
                 }
-                case "SMARTPHONE" -> {
+                case "40" -> {
                     SmartPhone smartPhone = productDto.getSmartPhoneConfig();
                     smartPhone.setSmartId(productSave);
                     SmartPhone smartPhoneSave = this.smartPhoneRepository.save(smartPhone);
                     productDtoReturn.setSmartPhoneConfig(smartPhoneSave);
                 }
-                case "ACCESSORY" -> {
+                case "41" -> {
                     Accessory accessory = productDto.getAccessoryConfig();
                     accessory.setAccessId(productSave);
                     Accessory accessorySave = this.accessoryRepository.save(accessory);
@@ -98,12 +96,13 @@ public class ProductController {
     @PutMapping("/")
     public ResponseEntity<ProductDto> updateProduct(@RequestBody ProductDto productDto
     ) {
+
 //        return ResponseEntity.ok(this.productService.addProduct(product));
-        if (!productDto.getProductEnum().equals(ProductEnum.ACCESSORY)
-                && !productDto.getProductEnum().equals(ProductEnum.LAPTOP)
-                && !productDto.getProductEnum().equals(ProductEnum.SMARTPHONE)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
+//        if (!productDto.getProductEnum().equals(ProductEnum.ACCESSORY)
+//                && !productDto.getProductEnum().equals(ProductEnum.LAPTOP)
+//                && !productDto.getProductEnum().equals(ProductEnum.SMARTPHONE)) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+//        }
         try {
             Product product = new Product();
             BeanUtils.copyProperties(productDto, product, "accessoryProd",
@@ -112,20 +111,20 @@ public class ProductController {
             ProductDto productDtoReturn = new ProductDto();
             BeanUtils.copyProperties(productSave, productDtoReturn, "accessoryProd",
                     "smartPhoneProd", "laptop", "productEnum");
-            switch (productDto.getProductEnum().toString()) {
-                case "LAPTOP" -> {
+            switch (productDto.getCategory().getCateId().toString()) {
+                case "39" -> {
                     Laptop laptop = productDto.getLaptopConfig();
                     laptop.setLap_id(productSave);
                     Laptop laptopSave = this.laptopRepository.save(laptop);
                     productDtoReturn.setLaptopConfig(laptopSave);
                 }
-                case "SMARTPHONE" -> {
+                case "40" -> {
                     SmartPhone smartphone = productDto.getSmartPhoneConfig();
                     smartphone.setSmartId(productSave);
                     SmartPhone smartphoneSave = this.smartPhoneRepository.save(smartphone);
                     productDtoReturn.setSmartPhoneConfig(smartphoneSave);
                 }
-                case "ACCESSORY" -> {
+                case "41" -> {
                     Accessory accessory = productDto.getAccessoryConfig();
                     accessory.setAccessId(productSave);
                     Accessory accessorySave = this.accessoryRepository.save(accessory);
