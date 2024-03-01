@@ -2,9 +2,11 @@ package com.example.graduationbe.controller;
 
 
 import com.example.graduationbe.dto.CategoryDto;
+import com.example.graduationbe.entities.ResponseObject;
 import com.example.graduationbe.entities.commerce.Category;
 import com.example.graduationbe.service.impl.CategoryServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,8 +21,9 @@ public class CategoryController {
     private final CategoryServiceImpl categoryService;
 
     @PostMapping("/")
-    public ResponseEntity<Category> addCategory(@RequestBody Category category) throws Exception {
-        return ResponseEntity.ok(this.categoryService.createCategory(category));
+    public ResponseEntity<ResponseObject> addCategory(@RequestBody Category category) throws Exception {
+        return ResponseEntity.ok(ResponseObject.builder()
+                .message("add category successfully").http(HttpStatus.OK).ob(category).build());
     }
 
     //update
@@ -31,8 +34,9 @@ public class CategoryController {
 
     //get category by id
     @GetMapping("/{cId}")
-    public ResponseEntity<CategoryDto> getCategoriesById(@PathVariable("cId") Long cId) {
-        return ResponseEntity.ok(this.categoryService.getCategoryById(cId));
+    public ResponseEntity<ResponseObject> getCategoriesById(@PathVariable("cId") Long cId) {
+        return ResponseEntity.ok(ResponseObject.builder()
+                .message("get information category successfully").http(HttpStatus.OK).ob(categoryService.getCategoryById(cId)).build());
     }
 
     //get all

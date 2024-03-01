@@ -1,6 +1,7 @@
 package com.example.graduationbe.service.impl;
 
 import com.example.graduationbe.dto.OrderDto;
+import com.example.graduationbe.dto.ShipperDto;
 import com.example.graduationbe.entities.User;
 import com.example.graduationbe.entities.commerce.*;
 import com.example.graduationbe.repository.*;
@@ -44,7 +45,7 @@ public class OrderServiceImpl implements OrderService {
         order.setUser(user);
         order.setOrderDate(new Date());
         order.setOrderStatus("Chờ xác nhận");
-        order.setPaymentMethod("Thanh toán khi nhận hàng");
+        order.setPaymentMethod(orderInput.getPaymentMethod());
         order.setOrderFullName(orderInput.getFullName());
         order.setOrderContactNumber(orderInput.getContactNumber());
         order.setOrderFullOder(orderInput.getFullAddress());
@@ -101,17 +102,18 @@ public class OrderServiceImpl implements OrderService {
     }
 
     //    @Cacheable(value = "order", key = "{#userId, #status}")
-    public List<OrderDto> getOrdersForShipper(Long userId, String status) {
+    public List<ShipperDto> getOrdersForShipper(Long userId, String status) {
         if (status.equals("All")) {
-            List<Order> oderDetails1 = this.orderRepository.findAllBy(userId);
-            List<OrderDto> orderDtos1 = oderDetails1.stream().map(order -> this.modelMapper.map(order, OrderDto.class)).collect(Collectors.toList());
-            return orderDtos1;
+            List<Shipper> shippers = this.shipperRepository.countBy(userId);
+            List<ShipperDto> shipperDtos = shippers.stream().map(shipper -> this.modelMapper.map(shipper, ShipperDto.class)).collect(Collectors.toList());
+            return shipperDtos;
         } else {
-            List<Order> oderDetails = this.orderRepository.findByShip(userId, status);
-            List<OrderDto> orderDtos = oderDetails.stream().map(order -> this.modelMapper.map(order, OrderDto.class)).collect(Collectors.toList());
-            return orderDtos;
+            List<Shipper> shippers = this.shipperRepository.findby(userId, status);
+            List<ShipperDto> shipperDtos = shippers.stream().map(shipper -> this.modelMapper.map(shipper, ShipperDto.class)).collect(Collectors.toList());
+            return shipperDtos;
         }
     }
+
 
     @Override
 //    @Cacheable("order")
@@ -132,6 +134,11 @@ public class OrderServiceImpl implements OrderService {
         User user = this.userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException("user not found"));
         Order order = this.orderRepository.findById(orderId).get();
         Shipper shipper = new Shipper();
+        if (order.getPaymentMethod().equals("CashOnDelivery")) {
+            shipper.setTotal(order.getOrderAmount());
+        } else {
+            shipper.setTotal(0.00);
+        }
         shipper.setOrder(order);
         shipper.setUser(user);
 
@@ -224,9 +231,12 @@ public class OrderServiceImpl implements OrderService {
 
     //
 //    @CacheEvict(value = "order", allEntries = true)
-    public void markOrderAsDelivered(Long orderId) {
+    public void markOrderAsDelivered(Long orderId, Long shipId) {
         Order orderDetails = this.orderRepository.findById(orderId).orElseThrow(() ->
                 new UsernameNotFoundException("order not found"));
+        Shipper shipper = this.shipperRepository.findById(shipId).get();
+        shipper.setTotal(0);
+        this.shipperRepository.save(shipper);
         if (orderDetails != null) {
             orderDetails.setOrderStatus("Đã giao");
             orderDetails.setDateDelivered(new Date());

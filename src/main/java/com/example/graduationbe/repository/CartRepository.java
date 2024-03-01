@@ -12,7 +12,7 @@ import java.util.List;
 public interface CartRepository extends JpaRepository<Cart, Long> {
     List<Cart> findByUser(User user);
 
-    @Query(value = "select count(*) from cart where  =?", nativeQuery = true)
+    @Query(value = "select count(*) from cart where  user_userid=?", nativeQuery = true)
     Long countCart(Long userId);
 
     @Query("select c from Cart c where c.user.userID=:userId and c.cartId in(:longs)")

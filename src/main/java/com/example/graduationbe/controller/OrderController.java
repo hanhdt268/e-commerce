@@ -1,12 +1,16 @@
 package com.example.graduationbe.controller;
 
 import com.example.graduationbe.dto.OrderDto;
+import com.example.graduationbe.dto.ShipperDto;
 import com.example.graduationbe.entities.User;
 import com.example.graduationbe.entities.commerce.OrderInput;
+import com.example.graduationbe.entities.commerce.Shipper;
 import com.example.graduationbe.repository.OrderRepository;
+import com.example.graduationbe.repository.ShipperRepository;
 import com.example.graduationbe.repository.UserRepository;
 import com.example.graduationbe.service.OrderService;
 import com.example.graduationbe.service.impl.OrderServiceImpl;
+import com.example.graduationbe.service.impl.PaypalService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/order")
@@ -28,6 +33,9 @@ public class OrderController {
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
+    private final ShipperRepository shipperRepository;
+
+    private final PaypalService paypalService;
 
     @PostMapping("/{isCartCheckout}")
     public void placeOrder(@RequestBody OrderInput orderInput, @PathVariable("isCartCheckout") boolean isCartCheckout) {
@@ -63,9 +71,17 @@ public class OrderController {
     }
 
     @GetMapping("/shipper/{userId}/{status}")
-    public List<OrderDto> getOrderByShipper(@PathVariable("userId") Long userId,
-                                            @PathVariable("status") String status) {
+    public List<ShipperDto> getOrderByShipper(@PathVariable("userId") Long userId,
+                                              @PathVariable("status") String status) {
         return this.orderServiceImpl.getOrdersForShipper(userId, status);
+    }
+
+    @GetMapping("/shipping/{userId}")
+    public List<ShipperDto> getOrderByShipping(@PathVariable("userId") Long userId) {
+        List<Shipper> shippers = this.shipperRepository.countBy(userId);
+        List<ShipperDto> shipperDto = shippers.stream().map(shipper ->
+                this.modelMapper.map(shipper, ShipperDto.class)).collect(Collectors.toList());
+        return shipperDto;
     }
 
     @GetMapping("/insert/{orderId}/{userId}")
@@ -146,9 +162,11 @@ public class OrderController {
         this.orderServiceImpl.markOrderAsDelivering(orderId);
     }
 
-    @GetMapping("/delivered/{orderId}")
-    private void markOrderAsDelivered(@PathVariable("orderId") Long orderId) {
-        this.orderServiceImpl.markOrderAsDelivered(orderId);
+    @GetMapping("/delivered/{orderId}/{shipId}")
+    private void markOrderAsDelivered(@PathVariable("orderId") Long orderId,
+                                      @PathVariable("shipId") Long shipId) {
+
+        this.orderServiceImpl.markOrderAsDelivered(orderId, shipId);
     }
 
     @GetMapping("/receive/{orderId}")
@@ -183,4 +201,10 @@ public class OrderController {
         return this.orderRepository.countCancel();
     }
 
+
+//    @PostMapping("/createPaypal")
+//    public TransactionDetails createPaypal(@RequestParam("method") String method,
+//                                           @RequestParam("description") String description) throws PayPalRESTException {
+//        return this.paypalService.createPayment("sale", method, description);
+//    }
 }

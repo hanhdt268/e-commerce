@@ -15,6 +15,7 @@ public class OrderInput implements Serializable {
     private String contactNumber;
     private String note;
     private Integer quantity;
+    private String paymentMethod;
     private Date orderDate;
     private List<OrderProductQuantity> oderProductQuantityList;
 }

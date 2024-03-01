@@ -18,6 +18,9 @@ public class Shipper {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long shipId;
 
+
+    private double total;
+
     @OneToOne
     private User user;
 
